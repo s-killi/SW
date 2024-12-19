@@ -1,0 +1,62 @@
+
+<!DOCTYPE html>
+<head><meta charset="UTF-8"/>
+
+
+	<title>Sendind a parameter with @RequestParam</title>
+	<meta charset="UTF-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+	<meta name="description" content="" />
+	<meta name="author" content="" />
+	<link rel="icon" href="/image/favicon.png" />
+
+	<!-- Bootstrap core CSS -->
+	<link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" type="text/css"/>
+	
+    <script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+    <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+    <link href="/webjars/open-iconic/font/css/open-iconic-bootstrap.min.css" rel="stylesheet" />
+    	
+	<!-- Custom styles for this template -->
+	<link href="/css/style.css" rel="stylesheet" />
+	
+	
+    
+    
+</head>
+
+
+<body>
+		   
+         <form th:action="@{/requestparam/process}"  method="POST">
+	            
+	              
+	                
+	                <div class="form-row">
+	                    <div class="form-group col-md-6">
+	                        <label for="login">Login </label>
+	                        <input type="text" class="form-control" id="login" placeholder="Login"
+	                               autofocus="autofocus" th:name="login" />	                        
+	                    </div>               
+	                    
+	            	</div>        
+	                    
+	                  
+	                 <div class="form-row">
+	                    <div class="form-group col-md-6">
+	                        <label for="pass">Password </label>
+	                        <input type="password" class="form-control" id="pass" placeholder="****"
+	                                th:name="pass" />	                        
+	                    </div>               
+	                    
+	            	</div>        
+	                    
+	                
+	                
+	                <input type="hidden" id="id" th:name="id"/>
+					<button type="submit" class="btn btn-primary btn-sm">Go!</button>
+           </form>
+	      
+</body>
+</html>		

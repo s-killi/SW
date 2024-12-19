@@ -1,0 +1,50 @@
+
+<!DOCTYPE html>
+<head><meta charset="UTF-8"/>
+
+</head>
+
+
+<body>
+		   
+	            <form th:action="@{/mapparams/process}"  method="POST">
+	                          
+	                
+	                <div class="form-row">
+	                    <div class="form-group col-md-6">
+	                        <label for="login">Login </label>
+	                        <input type="text" class="form-control" id="login" placeholder="Login"
+	                               autofocus="autofocus" th:name="login" />	                        
+	                    </div>               
+	                    
+	            	</div>        
+	                    
+	                  
+	                 <div class="form-row">
+	                    <div class="form-group col-md-6">
+	                        <label for="pass">Password </label>
+	                        <input type="password" class="form-control" id="pass" placeholder="****"
+	                                th:name="pass" />	                        
+	                    </div>               
+	                    
+	            	</div>        
+	            	
+            	  <div class="form-row">
+	                    <div class="form-group col-md-6">
+							<label for="pass">Role </label>
+			            	<select class="form-control" name="role" id="role">
+							    <option th:value="-1">Select</option>
+							    <option th:value="1"  th:text="Admin" />
+   							    <option th:value="2"  th:text="User" /> 
+							</select>
+	                    </div>
+	                    
+	              </div>      
+	                
+	                
+
+					<button type="submit" class="btn btn-primary btn-sm">Go!</button>
+	            </form>
+	      
+</body>
+</html>		
