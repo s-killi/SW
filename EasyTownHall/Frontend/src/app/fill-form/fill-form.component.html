@@ -1,0 +1,144 @@
+
+
+<div class="row justify-content-center">
+  <div class="col-8">
+@if(isLoaded == true){
+  <h1> {{ applicationForm.title }}</h1>
+  <p> {{ applicationForm.description }}</p>
+    <form [formGroup]="form">
+      
+      @for(field of applicationForm.formFields; track field.fieldName){
+        <div class="form-group mb-3"> 
+        <label for="field.fieldName" class="form-label">
+          {{ field.fieldName }}
+          @if(field.labelHelp){
+            <span title="{{field.labelHelp}}"><?></span>
+          }
+        </label>
+
+        @switch(field.fieldType){
+            @case('TEXT') {
+                <input
+                  type="text"
+                  [formControlName]="field.fieldName"
+                  placeholder="Bitte Text eingeben"
+                  value="field.defaultValue"
+                  [required]="field.isRequired"
+                  id="field.fieldName"
+                  class="form-control"
+                />
+                <br>
+            }
+            @case('DROPDOWN') {
+              <select class="form-control" [formControlName]=field.fieldName [id]="field.fieldName" [required]="field.isRequired">
+                <option value="" disabled selected>{{'Choose'|translate}} </option>
+                @for (entry of field.data | keyvalue; track entry.key) {
+                  <option value="{{entry.value}}">{{ entry.value }}</option>
+                }
+              </select>
+              
+              <br>
+            }
+            @case('CHECKBOX') {
+              <div formArrayName="{{field.fieldName}}">
+              @for(entry of field.data | keyvalue; track entry.key){
+                <br>
+                <div class="form-check">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  formControlName="{{$index}}"
+                  id="{{field.fieldName}}{{entry.key}}"
+                  name="{{field.fieldName}}{{entry.key}}"
+                  value="{{entry.value}}"
+                >
+
+                <label class="form-check-label" for="{{field.fieldName}}{{entry.key}}">{{ entry.value}}</label>
+                </div>
+              }
+              </div>
+              <br>
+            }@case('RADIO_BUTTON') {
+              @for(entry of field.data | keyvalue; track entry.key){
+                <br>
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    [formControlName]="field.fieldName"
+                    id="{{field.fieldName}}{{entry.key}}"
+                    name="{{field.fieldName}}"
+                    value="{{field.fieldName}}{{entry.value}}"
+                  >
+                  <label class="form-check-label" for="{{field.fieldName}}{{entry.key}}">{{ entry.value}}</label>
+                </div>
+              }
+              <br>
+            }
+          
+              <!-- Textarea -->
+              @case('TEXTAREA') {
+                <textarea
+                  [formControlName]="field.fieldName"
+                  placeholder="Bitte mehrzeiligen Text eingeben"
+                  [required]="field.isRequired"
+                  class="form-control"
+                ></textarea>
+                <br>
+
+              }
+          
+              <!-- Number Field -->
+              @case('NUMBER') {
+                <input
+                  type="number"
+                  [formControlName]="field.fieldName"
+                  placeholder="Bitte Zahl eingeben"
+                  [required]="field.isRequired"
+                  class="form-control"
+                />
+                <br>
+              }
+          
+              <!-- Date Field -->
+              @case('DATE') {
+                <input
+                  type="date"
+                  [formControlName]="field.fieldName"
+                  [required]="field.isRequired"
+                  class="form-control"
+                />
+                <br>
+              }
+
+              <!-- File Upload -->
+              @case('FILE_UPLOAD') {
+                <!--TODO: Fileupload handeln-->
+                <input
+                  type="file"
+                  (change)="onFileChange($event, field.fieldName)"
+                  [required]="field.isRequired"
+                  class="form-control"
+                />
+                <br>
+              }
+          
+              <!-- Default Case -->
+              @default {
+                <p>Unbekannter Feldtyp: {{ field.fieldType }}</p>
+                <br>
+              }
+        }
+        </div>
+      }
+      <button class="btn btn-primary" type="submit" (click)="submitForm()">{{'Submit_Application'|translate}}</button>
+      
+    </form>
+    
+}@else{
+  <div>
+  <h1>{{'Application_Not_Found'|translate}} ...</h1>
+  </div>
+}
+</div>
+</div>

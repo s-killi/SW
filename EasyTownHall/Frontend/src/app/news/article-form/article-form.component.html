@@ -1,0 +1,76 @@
+<div class="container-md">
+  @if(isEditMode){
+    <h1>{{'Edit_Article'|translate}}: </h1>
+  }
+  @else {
+    <h1>{{'Create_New_Article'|translate}}: </h1>
+  }
+  
+  <form [formGroup]="articleForm" (ngSubmit)="onSubmit()" class="container mt-4 p-4 border rounded shadow-sm">
+      <div class="mb-3">
+          <label for="title" class="form-label">{{'Title'|translate}}:</label>
+          <input 
+            id="title" 
+            type="text" 
+            formControlName="title" 
+            class="form-control" 
+            [class.is-invalid]="articleForm.get('title')?.invalid && articleForm.get('title')?.touched" />
+          <div class="invalid-feedback">
+            {{'Title_Necessary'|translate}}
+          </div>
+        </div>
+    
+        <div class="mb-3">
+          <label for="content" class="form-label">{{'Content'|translate}}:</label>
+          <textarea 
+            id="content" 
+            formControlName="content" 
+            class="form-control" 
+            rows="4"></textarea>
+        </div>
+  
+        
+  
+        <select 
+        id="category" 
+        formControlName="category" 
+        class="form-select">
+        @for (categoryType of categoryTypes; track categoryType) {
+          <option [value]="categories[categoryType]">{{categories[categoryType]}}</option>
+       }
+          
+      </select>
+    
+        <div class="form-check mb-3">
+          <input 
+            type="checkbox" 
+            class="form-check-input" 
+            id="isPublished" 
+            formControlName="isPublished" />
+          <label for="isPublished" class="form-check-label">
+            {{'Publish'|translate}}
+          </label>
+        </div>
+  
+        <div class="mb-3">
+          <label for="author" class="form-label">{{'Author'|translate}}: </label>
+          <input 
+            id="author" 
+            type="text" 
+            formControlName="author" 
+            class="form-control" 
+            [class.is-invalid]="articleForm.get('author')?.invalid && articleForm.get('author')?.touched" />
+          <div class="invalid-feedback">
+            {{'Author_Necessary'|translate}}!
+          </div>
+        </div>
+      
+        <button 
+          type="submit" 
+          class="btn btn-primary w-100">
+          {{'Save'|translate}}
+        </button>
+    </form>
+</div>
+
+  

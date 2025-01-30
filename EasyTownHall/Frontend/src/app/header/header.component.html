@@ -1,0 +1,123 @@
+<header>
+  <div class="p-3 header-townhall">
+      <div class="d-flex flex-row align-items-center justify-content-between">
+        <div class="d-flex align-items-center">
+          <img src="assets/img/townhall.png" alt="townhall_img" class="me-3" style="height: 50px;">
+          <div>
+            <h1 class="mb-0 fs-3">EasyTownHall</h1>
+          </div>
+        </div>
+
+        <nav class="navbar navbar-expand-lg navbar-light">
+            <ul class="navbar-nav ms-auto">
+              <li class="nav-item active">
+                <a class="nav-link" aria-current="page" href="">{{ 'Home' | translate }}</a>
+              </li>
+              @if(this.authService.isLoggedIn()){
+                <li class="nav-item">
+                  <a class="nav-link" href="news">{{'News' | translate}}</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="appointments">{{'Appointments' | translate}}</a>
+                </li>
+              }
+              <li class="nav-item">
+                <a class="nav-link" href="application">{{'Applications' | translate}}</a>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link" href="about">{{'About' | translate}}</a>
+              </li>
+              @if(this.authService.isAdmin() | async){
+                <li class="nav-item">
+                  <a class="nav-link" href="roles">{{'Role_Asigning'|translate}}</a>
+                </li>
+              }
+            </ul>
+        </nav>
+
+        <nav class="navbar navbar-expand-lg navbar-light">
+          @if (!this.authService.isLoggedIn()) {
+            <ul class="navbar-nav ms-auto">
+              <li class="nav-item">
+                <a class="nav-link" href="login">{{'Login' | translate}}</a>
+              </li>
+            </ul>
+          } @else {
+            <ul class="navbar-nav ms-auto">
+              <li class="nav-item">
+                <a class="nav-link" (click)="toProfil()" >{{'Profil' | translate}}</a>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link" (click)="logout()">{{'Logout' | translate}}</a>
+              </li>
+            </ul>
+          }
+        </nav>
+
+        <div class="dropdown">
+          <button
+            class="btn btn-outline-secondary dropdown-toggle"
+            type="button"
+            id="languageDropdown"
+            data-bs-toggle="dropdown"
+            aria-expanded="false">
+            {{'Choose' | translate}}
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="languageDropdown">
+            <!-- Deutsch -->
+            <li>
+              <button class="dropdown-item" (click)="switchLang('de')">
+                🇩🇪 Deutsch
+              </button>
+            </li>
+          
+            <!-- Englisch -->
+            <li>
+              <button class="dropdown-item" (click)="switchLang('en')">
+                🇬🇧 English
+              </button>
+            </li>
+          
+            <!-- Französisch -->
+            <li>
+              <button class="dropdown-item" (click)="switchLang('fr')">
+                🇫🇷 Français
+              </button>
+            </li>
+          
+            <!-- Brasilianisches Portugiesisch -->
+            <li>
+              <button class="dropdown-item" (click)="switchLang('pt-br')">
+                🇧🇷 Português (BR)
+              </button>
+            </li>
+          
+            <!-- Niederländisch -->
+            <li>
+              <button class="dropdown-item" (click)="switchLang('nl')">
+                🇳🇱 Nederlands
+              </button>
+            </li>
+          
+            <!-- Belgisch (z.B. für fr-BE oder nl-BE) -->
+            <li>
+              <button class="dropdown-item" (click)="switchLang('be')">
+                🇧🇪 Belgiën
+              </button>
+            </li>
+          
+            <!-- Italienisch -->
+            <li>
+              <button class="dropdown-item" (click)="switchLang('it')">
+                🇮🇹 Italiano
+              </button>
+            </li>
+          </ul>
+          
+        </div>
+
+
+
+      </div>
+    </div>
+</header>

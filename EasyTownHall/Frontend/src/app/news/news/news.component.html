@@ -1,0 +1,99 @@
+<div class="container-md">
+<div class="article-header d-flex justify-content-between align-items-center">
+    <h1>
+        <i class="bi bi-newspaper"></i>
+        {{'News_Town'|translate}}
+    </h1>
+    <div>
+        @if(isSubbed){
+            <button type="button" class="btn btn-danger" (click)="unsubscribe()"> 
+                {{'Unsubscribe'|translate}}
+           </button>
+        }
+        @else {
+            <button type="button" class="btn btn-success" (click)="subscribeToNewsLetter()"> 
+                + {{'Subscribe'|translate}}
+           </button>
+        }
+        
+        @if(this.authService.isServiceWorker() || this.authService.isAdmin() | async){
+            <button type="button" class="btn btn-primary" (click)="sendMails()">
+                <i class="bi bi-send"></i> 
+                {{'Send_Mail'|translate}}
+           </button>
+
+            <a href="news/editArticles" type="button" class="btn btn-success">
+                <i class="bi bi-pencil-square"></i>
+                {{'Edit_Article'|translate}}
+            </a>
+        }
+    </div>
+</div>
+
+<div class="d-flex align-items-center">
+    <div class="input-group">
+      <span class="input-group-text d-flex">
+        <i class="bi bi-search"></i>
+      </span>
+      <input 
+        type="search" 
+        [formControl]="filterControl" 
+        [(ngModel)]="searchtext" 
+        placeholder="{{'Search...' | translate}}" 
+        class="form-control searchbar">
+    </div>
+    
+    <form [formGroup]="orderForm" (ngSubmit)="onSubmit()" class="d-flex align-items-center">
+        <div class="mb-3">
+          <select id="dropdown" formControlName="dropdownControl" class="form-select dropdown">
+            <option value="createdAt">{{'Created_At'|translate}}</option>
+            <option value="updatedAt">{{'Updated_At'|translate}}</option>
+            <option value="id">{{'Id'|translate}}</option>
+            <option value="title">{{'Title'|translate}}</option>
+            <option value="author">{{'Author'|translate}}</option>
+          </select>
+        </div>
+
+        <button (click)="changeOrder()" type="submit" class="btn btn-primary">
+            @if(this.orderState){
+                <i class="bi bi-arrow-down"></i>
+            }
+            @else {
+                <i class="bi bi-arrow-up"></i>
+            }
+        </button>
+      
+        <!-- <button type="submit" class="btn btn-primary">Aktualisieren</button> -->
+      </form>
+
+  </div>
+  @if(!this.orderedArticlesEmpty()){
+    @for(article of allOrderedArticles | articlefilter:searchtext ; track article.id ){
+        @if(article.published){
+            <div class="article">
+                <h3>ID: {{article.id}} {{article.title}}</h3>
+                <p>{{'Category'|translate}}: {{article.category}}</p>
+                <p>{{article.content}}</p>
+                <p>{{'Written_By'|translate}}: {{article.author}} {{'At'|translate}} {{article.createdAt | date:" dd. MMMM yyyy" | articlefilter:searchtext}}</p>
+                <hr>
+            </div>
+        }
+    }
+  }
+  @else {
+    @if(allArticles | async ; as articles){
+        @for(article of articles | articlefilter:searchtext ; track article.id ){
+            @if(article.published){
+                <div class="article">
+                    <h3>{{article.title}}</h3>
+                    <p>{{'Category'|translate}}: {{article.category}}</p>
+                    <p>{{article.content}}</p>
+                    <p>{{'Written_By'|translate}}: {{article.author}} {{'At'|translate}} {{article.createdAt | date:" dd. MMMM yyyy" | articlefilter:searchtext}}</p>
+                    <hr>
+                </div>
+            }
+        }
+    }
+  }
+    
+</div>

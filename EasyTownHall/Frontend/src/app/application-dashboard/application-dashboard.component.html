@@ -1,0 +1,72 @@
+@if(isAdmin || isServicworker){
+    <div class="row justify-content-center">
+        <div class="col-8">
+            <div>
+                <h1>{{'Application_Dashboard'|translate}}</h1>
+            </div>
+            <div >
+                <h3>{{'Submitted_Applications'|translate}}</h3>
+                <div>              
+                    @for(application of submittedApplications; track application.id){
+                        <a (click)="goToApplication(application)">
+                            <div class="card shadow-sm border-0" style="width: 18rem;" >
+                                <div class="card-body" >
+                                  <h5 class="card-title fw-bold">{{ application.applicationFormName }}</h5>
+                                  <h6 class="card-subtitle mb-2 text-muted">{{'Submitted_At'|translate}} {{ application.submissionDate}}</h6>
+                                  <p class="card-text text-capitalize">{{'Statues'|translate}}: {{ application.status }}</p>
+                                </div>
+                            </div>
+                        </a>
+                        <br>
+                    }
+                </div>
+                <br>
+            </div>
+            
+            <div>
+                <button class="btn btn-primary fw-bold" (click)="navToNewApplication()"> + {{'Create_New_Application'|translate}}</button>
+            </div>
+    
+            <div>
+                <h3>{{'Update_Application'|translate}}</h3>
+                <div>
+                    @for (form of forms; track $index) {
+                        <div class="card mb-3">
+                            <div class="card-body">
+                              <!-- Kopfzeile (Titel links, Button rechts) -->
+                              <div class="d-flex justify-content-between align-items-center">
+                                <h5 class="card-title mb-0">{{ form.title }}</h5>
+                                <button
+                                  type="button"
+                                  class="btn btn-primary"
+                                  (click)="archiveForm(form.id, form)"
+                                >
+                                  <i class="bi bi-archive"></i>
+                                  {{'Archiv'|translate}}
+                                </button>
+                              </div>
+                          
+                              <!-- Beschreibung -->
+                              <p class="card-text mt-3">{{ form.description }}</p>
+                          
+                              <!-- Footer-Bereich: Button am rechten Rand -->
+                              <div class="d-flex justify-content-end">
+                                <button 
+                                  class="btn btn-secondary" 
+                                  (click)="navigateModifyAntrag(form)"
+                                >
+                                {{'Mod_Application'|translate}}
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                          
+                      }
+                </div>
+            </div>
+        </div>
+    </div>
+}@else {
+    <p>{{'Unauthorized'|translate}}</p>
+}
+

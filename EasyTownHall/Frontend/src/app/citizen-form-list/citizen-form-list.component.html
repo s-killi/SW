@@ -1,0 +1,11 @@
+<p>citizen-form-list works!</p>
+<div>
+    <h1>citizen-form-list: Antragsformular</h1>
+    <div>
+        @for (form of forms; track $index) {
+            <h2>{{ form.title }}</h2>
+            <p> {{ form.description}}</p>
+            <button (click)="navigateToEdit(form.id)">Formular ausfüllen</button>
+        }
+    </div>
+</div>

@@ -1,0 +1,59 @@
+<div class="container-fluid full-height d-flex flex-column">
+  <div class="row flex-grow-1">
+    <!-- Linke Spalte -->
+    <div class="col-md-5 d-flex flex-column border townhall-col">
+      <div class="flex-grow-1 p-3 rounded shadow-sm footBallStats">
+        <app-football-stats></app-football-stats>
+      </div>
+    </div>
+
+    <!-- Mittlere Spalte -->
+    <div class="col-md-5 d-flex flex-column border townhall-col">
+      <div class="flex-grow-1  p-3 mb-3 rounded shadow-sm">
+        <h5 class="text-danger">{{'Current_Covid_Rules'|translate}}</h5>
+        @for(info of covidData; track $index) {
+          @if($index < 4) {
+            <p>{{ getTeaserHeader(info.teaserText, 140) }}</p>
+          } @else {
+            @if($index == 4) {
+              <p>...</p>
+            }
+          }
+        }
+      </div>
+      <div class="flex-grow-1 border p-3 rounded shadow-sm">
+        <h1 class="text-primary h4">
+          {{'Current_News_Regensburg'|translate}}
+          <i class="bi bi-newspaper ms-2"></i>
+        </h1>
+        <p>
+          {{'Keep_Up_To_Date'|translate}}
+          <a href="/news" class="text-decoration-none text-primary">{{'See_All_News'|translate}}</a>
+        </p>
+        <hr>
+        <div class="articles">
+          @if(allArticles$ | async ; as articles) {
+            @for(article of articles; track article.id) {
+              @if(article.published) {
+                <div class="article mb-4">
+                  <h3 class="h6">{{ article.title }}</h3>
+                  <p>{{'Category'|translate}}: {{ article.category }}</p>
+                  <p>{{ article.content }}</p>
+                  <p class="small text-muted">
+                    {{'Written_By'|translate}}: {{ article.author }} {{'At'|translate}} {{ article.createdAt | date: " dd. MMMM yyyy" }}
+                  </p>
+                </div>
+                <hr>
+              }
+            }
+          }
+        </div>
+      </div>
+    </div>
+    <!-- Rechte Spalte -->
+    <div class="col-md-2 d-flex flex-column border townhall-col">
+      <div class="flex-grow-1 p-3 mb-3 rounded shadow-sm">
+        <app-weather></app-weather>
+      </div>
+  </div>
+</div>

@@ -1,0 +1,50 @@
+<h1>{{message$ | async}}</h1>
+
+<h1>Test Komponente</h1>
+<h3>Bitte Daten eintragen</h3>
+
+<form [formGroup]="profileForm"
+(ngSubmit)="handleSubmit()">
+  <label>
+    Name
+    <input type="text" formControlName="name" />
+  </label>
+  <label>
+    Age
+    <input type="number" formControlName="age" />
+  </label>
+  <button type="submit">Submit</button>
+</form>
+
+<h2>User mit Id:</h2>
+@if (userById$ | async; as user) {
+  <p>{{user.id}}</p>
+  <p>{{user.name}}</p>
+  <p>{{user.age}}</p>
+}
+
+<h2>Alle Nutzer</h2>
+@if (allUsers | async; as loadedUsers) {
+  @for (user of loadedUsers; track user.id){
+    <li>
+      <p>ID: {{ user.id }}</p>
+      <p>Name: {{ user.name }}</p>
+      <p>Alter: {{ user.age }}</p>
+    </li> 
+    <button type="button" class="btn btn-success" (click)="deleteUser(user.id)">Delete User</button>
+
+    <h3>Update User:</h3>
+    <form [formGroup]="profileFormUpdate"
+    (ngSubmit)="updateUser(user.id)">
+      <label>
+       Name
+       <input type="text" formControlName="nameUpdate" />
+      </label>
+      <label>
+      Age
+      <input type="number" formControlName="ageUpdate" />
+      </label>
+  <button type="submit">Submit</button>
+</form>
+  }
+}

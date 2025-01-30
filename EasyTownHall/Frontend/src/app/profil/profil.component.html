@@ -1,0 +1,223 @@
+<div class="container mt-4">
+  <div class="row justify-content-center">
+    <!-- Profil-Karte -->
+    <div class="col-12 col-md-8 col-lg-4 mb-4">
+      <div class="card shadow">
+        <div class="card-body">
+          <h2 class="card-title mb-4">
+            <i class="bi bi-person-circle me-2"></i>
+            {{'Edit_Profil'|translate}}
+          </h2>
+
+          <form (ngSubmit)="updateProfile()">
+            <!-- E-Mail -->
+            <div class="mb-3">
+              <label for="email" class="form-label">
+                <i class="bi bi-envelope-fill me-1"></i>
+                {{'Email'|translate}}
+              </label>
+              <input
+                id="email"
+                type="email"
+                class="form-control"
+                [(ngModel)]="profil.email"
+                name="email"
+                required
+              />
+            </div>
+
+            <!-- Passwort -->
+            <div class="mb-3">
+              <label for="password" class="form-label">
+                <i class="bi bi-key-fill me-1"></i>
+                {{'Password'|translate}}
+              </label>
+              <input
+                id="password"
+                type="password"
+                class="form-control"
+                [(ngModel)]="profil.password"
+                name="password"
+                required
+              />
+            </div>
+
+            <!-- Username -->
+            <div class="mb-3">
+              <label for="username" class="form-label">
+                <i class="bi bi-person-check-fill me-1"></i>
+                {{'Username'|translate}}
+              </label>
+              <input
+                id="username"
+                type="text"
+                class="form-control"
+                [(ngModel)]="profil.username"
+                name="username"
+                required
+              />
+            </div>
+
+            <!-- Persönliche Daten (falls citizenProfil vorhanden) -->
+            @if(citizenProfil) {
+              <h3 class="mt-4 mb-3">
+                <i class="bi bi-card-checklist me-2"></i>
+                {{'Personal_Data'|translate}}
+              </h3>
+
+              <!-- Vorname -->
+              <div class="mb-3">
+                <label for="firstname" class="form-label">
+                  {{'Firstname'|translate}}
+                </label>
+                <input
+                  id="firstname"
+                  type="text"
+                  class="form-control"
+                  [(ngModel)]="citizenProfil.firstName"
+                  name="firstname"
+                  required
+                />
+              </div>
+
+              <!-- Nachname -->
+              <div class="mb-3">
+                <label for="lastname" class="form-label">
+                  {{'Lastname'|translate}}
+                </label>
+                <input
+                  id="lastname"
+                  type="text"
+                  class="form-control"
+                  [(ngModel)]="citizenProfil.lastName"
+                  name="lastname"
+                  required
+                />
+              </div>
+
+              <!-- Geburtstag -->
+              <div class="mb-3">
+                <label for="dob" class="form-label">
+                  {{'Birthday'|translate}}
+                </label>
+                <input
+                  id="dob"
+                  type="date"
+                  class="form-control"
+                  [(ngModel)]="citizenProfil.dob"
+                  placeholder="Bitte wählen..."
+                  name="dob"
+                  required
+                />
+              </div>
+
+              <!-- Geschlecht-Auswahl -->
+              <div class="mb-3">
+                <label for="gender" class="form-label">
+                  {{'Sex'|translate}}
+                </label>
+                <select
+                  id="gender"
+                  name="gender"
+                  class="form-select"
+                >
+                  @for (g of genders; track $index) {
+                    @if(genderEquals(g, citizenProfil.gender)) {
+                      <option [value]="g" selected>{{ g }}</option>
+                    } @else {
+                      @if($first && (citizenProfil.gender == "" || citizenProfil.gender == null)) {
+                        <option selected disabled>{{'Choose'|translate}}</option>
+                      }
+                      <option [value]="g">{{ g }}</option>
+                    }
+                  }
+                </select>
+              </div>
+            }
+
+            <!-- Absenden -->
+            <button type="submit" class="btn btn-primary">
+              <i class="bi bi-save me-1"></i>
+              {{'Save'|translate}}
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Antrags-Übersicht -->
+    <div class="col-12 col-md-8 col-lg-8">
+      <h3 class="mb-3">
+        <i class="bi bi-file-text me-2"></i>
+        {{'Your_Applications'|translate}}
+      </h3>
+
+      <!-- Ausstehend -->
+      <div class="mb-4">
+        <h5 class="text-secondary fw-bold mb-3">
+          <i class="bi bi-hourglass-split me-1"></i>
+          {{'Pending'|translate}}
+        </h5>
+        <div class="row row-cols-1 row-cols-md-2 g-3">
+          @for(application of pendingApplications; track application.id) {
+            <div class="col">
+              <a 
+                (click)="goToApplication(application)" 
+                class="text-decoration-none text-dark"
+              >
+                <div class="card shadow-sm border-0 h-100">
+                  <div class="card-body">
+                    <h5 class="card-title fw-bold">{{ application.applicationFormName }}</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">
+                      {{'Submitted_At'|translate}} {{ application.submissionDate}}
+                    </h6>
+                    <p class="card-text text-capitalize">
+                      {{'Status'|translate}}: {{ application.status }}
+                    </p>
+                  </div>
+                </div>
+              </a>
+            </div>
+          }
+        </div>
+      </div>
+
+      <!-- Abgeschlossen -->
+      <div>
+        <h5 class="text-secondary fw-bold mb-3">
+          <i class="bi bi-check2-circle me-1"></i>
+          {{'Finished'|translate}}
+        </h5>
+        <div class="row row-cols-1 row-cols-md-2 g-3">
+          @for(application of completedApplications; track application.id) {
+            <div class="col">
+              <a class="text-decoration-none text-dark">
+                <div class="card shadow-sm border-0 h-100">
+                  <div class="card-body">
+                    <h5 class="card-title fw-bold">{{ application.applicationFormName }}</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">
+                      {{'Submitted_At'|translate}} {{ application.submissionDate}}
+                    </h6>
+                    <p class="card-text text-capitalize">
+                      {{'Status'|translate}}: {{ application.status }}
+                    </p>
+                  </div>
+                </div>
+              </a>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+    <div class="text-center mt-5">
+      <button
+        type="button"
+        class="btn btn-danger btn-lg shadow-sm"
+        (click)="deleteAccount(this.id)"
+      >
+        <i class="bi bi-trash-fill me-2"></i>
+        {{ 'Delete_Account' | translate }}
+      </button>
+    </div>
+  </div>
+</div>

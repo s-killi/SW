@@ -1,0 +1,57 @@
+<div class="container-md">
+    <div class="article-header d-flex justify-content-between align-items-center">
+        @if(this.authService.isCitizen() | async){
+          <h1> <i class="bi bi-list-task"></i> {{'Your appointments' | translate}} </h1>
+          <a href="appointments/new" type="button" class="btn btn-success">
+            <i class="bi bi-pencil-square"></i>
+            {{'New Appointment' | translate}}
+        </a>
+        }
+        @else {
+          <h1>{{'Appointments for your Department' | translate}}:</h1>
+        }
+    </div>
+    
+    <div class="d-flex align-items-center">
+        <div class="input-group">
+          <span class="input-group-text d-flex">
+            <i class="bi bi-search"></i>
+          </span>
+          <input 
+            type="search" 
+            [formControl]="filterControl" 
+            [(ngModel)]="searchtext" 
+            placeholder="{{'Search...' | translate}}" 
+            class="form-control">
+        </div>
+      </div>
+    
+    
+    @if(this.authService.isServiceWorker() | async){
+      @if(serviceWorkerAppointments$ | async ; as appointments){
+        @for(appointment of appointments | articlefilter:searchtext ; track appointment.timeslotId ){
+                <div class="article">
+                    <h3>{{'Department' | translate}} {{appointment.departmentName}}</h3>
+                    <p>{{'On the' | translate}} {{appointment.date | date:" dd. MMMM yyyy" | articlefilter:searchtext}} {{'at' | translate}} {{this.appointmentService.formatTime(appointment.startTime)}} {{'o\'clock' | translate}}</p>
+                    <p>{{'Citizen' | translate}}: {{appointment.citizenName}}</p>
+                    <p>{{'Reason for visit' | translate}}: {{appointment.reason}}</p>
+                    <hr>
+                </div>
+        }
+    }
+    } 
+    
+    @if(appointments$ | async ; as appointments){
+      @for(appointment of (appointments | articlefilter:searchtext); track appointment.timeslotId) {
+        <div class="article">
+            <h3>{{'Your appointment at' | translate}} {{appointment.departmentName}}</h3>
+            <p>{{'On the' | translate}} {{appointment.date | date:'dd. MMMM yyyy'}} {{'at' | translate}} {{this.appointmentService.formatTime(appointment.startTime) | articlefilter:searchtext}} {{'o\'clock' | translate}}</p>
+            <p>{{'Reason for visit' | translate}} {{appointment.reason}}</p>
+            <button class="btn btn-danger" (click)="cancelAppointment(appointment.timeslotId)">{{'Cancel' | translate}}</button>
+            <button class="btn btn-primary" (click)="updateAppointment(appointment.timeslotId)">{{'Change appointment' | translate}}</button>
+            <hr>
+        </div>
+        }
+    }
+</div>
+

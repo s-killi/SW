@@ -1,0 +1,11 @@
+@if(weatherData$ | async; as weatherData){
+    <h2>{{'Current_Weather_For'|translate}} {{weatherData.cityName}}</h2>
+    <img src="assets/img/{{weatherData.image}}.png" alt="WetterIcon">
+    <p>{{weatherData.temperature}} C°</p>
+    <p>{{weatherData.description}}</p>
+    <p>{{weatherData.humidity}}% {{'Humidity'|translate}} <i class="bi bi-droplet" style="color: blue;"></i> </p>
+    <p>{{weatherData.windSpeed}} km/h {{'Wind_Speed'|translate}} <i class="bi bi-wind"></i> </p>
+    <p>{{'Sunrise'|translate}}: {{formatTime(weatherData.sunrise)}} <i class="bi bi-sunrise-fill" style="color: orange;"></i> </p>
+    <p>{{'Sunset'|translate}}: {{formatTime(weatherData.sunset)}} <i class="bi bi-sunset-fill" style="color: orange;"></i> </p>
+    <a href="https://www.flaticon.com/free-icons/weather" title="weather icons">Weather icons created by Freepik & Iconixar - Flaticon</a>
+}

@@ -1,0 +1,93 @@
+<div class="container my-5">
+  <div class="row justify-content-center">
+    <div class="col-4 text-center">
+      <div class="mb-4">
+        <img src="assets/img/townhall.png" alt="Town Hall" class="img-fluid rounded mb-3" />
+        <h3 class="nowrap">{{ 'Welcome_to_Easy_Town_Hall' | translate }}</h3>
+      </div>
+
+      <ul class="nav nav-pills nav-justified mb-3" id="ex1" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button
+            [ngClass]="active == 'login' ? 'nav-link active' : 'nav-link'"
+            id="tab-login"
+            (click)="onLoginTab()"
+          >
+            {{ 'Login' | translate }}
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button
+            [ngClass]="active == 'register' ? 'nav-link active' : 'nav-link'"
+            id="tab-register"
+            (click)="onRegisterTab()"
+          >
+            {{ 'Register' | translate }}
+          </button>
+        </li>
+      </ul>
+
+      <div class="tab-content">
+        <div [ngClass]="active == 'login' ? 'tab-pane fade show active' : 'tab-pane fade'">
+          <form (ngSubmit)="onSubmitLogin()" #loginForm="ngForm">
+            <div class="form-outline mb-4">
+              <input
+                type="email"
+                id="loginEmail"
+                name="email"
+                class="form-control"
+                [(ngModel)]="email"
+                required
+              />
+              <label class="form-label" for="loginEmail">{{ 'Email' | translate }}</label>
+            </div>
+
+            <div class="form-outline mb-4">
+              <input
+                type="password"
+                id="loginPassword"
+                name="password"
+                class="form-control"
+                [(ngModel)]="password"
+                required
+              />
+              <label class="form-label" for="loginPassword">{{ 'Password' | translate }}</label>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-block mb-4">{{ 'Sign_In' | translate }}</button>
+          </form>
+        </div>
+
+        <div [ngClass]="active == 'register' ? 'tab-pane fade show active' : 'tab-pane fade'">
+          <form (ngSubmit)="onSubmitRegister()" #registerForm="ngForm">
+            <div class="form-outline mb-4">
+              <input
+                type="email"
+                id="registerEmail"
+                name="email"
+                class="form-control"
+                [(ngModel)]="email"
+                required
+              />
+              <label class="form-label" for="registerEmail">{{ 'Email' | translate }}</label>
+            </div>
+
+            <div class="form-outline mb-4">
+              <input
+                type="password"
+                id="registerPassword"
+                name="password"
+                class="form-control"
+                [(ngModel)]="password"
+                required
+              />
+              <label class="form-label" for="registerPassword">{{ 'Password' | translate }}</label>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-block mb-3">{{ 'Register' | translate }}</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

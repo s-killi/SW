@@ -1,0 +1,9 @@
+@if(errorMessage){
+    <div class="alert alert-danger alert-dismissible fade show">
+        {{errorMessage}}
+        @if(!this.authService.isLoggedIn()){
+            <a href="/login">{{'Login'|translate}}</a>
+        }
+        <button type="button" class="btn-close" (click)="dismiss()" aria-label="Close"></button>
+    </div>
+}

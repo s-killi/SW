@@ -1,0 +1,51 @@
+<div class="container">
+  <h2 class="text-center text-success">{{'Current Football Stats of the SV Jahn Regensburg' | translate}}</h2>
+
+  @if (footballData$ | async; as footballData) {
+    <table class="table table-striped table-hover mt-3">
+      <thead class="table-dark">
+        <tr>
+          <th>{{'Match Date' | translate}}</th>
+          <th>{{'League Name' | translate}}</th>
+          <th>{{'League Season' | translate}}</th>
+          <th>{{'Team 1' | translate}}</th>
+          <th>{{'Team 2' | translate}}</th>
+          <th>{{'Score' | translate}}</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (match of footballData; track match) {
+          <tr>
+            <td>{{ match.matchDate }}</td>
+            <td>{{ match.leagueName }}</td>
+            <td>{{ match.leagueSeason }}</td>
+            <td>
+              <div class="d-flex align-items-center">
+                <img [src]="match.teamOneIcon" alt="{{ match.teamOneName }}" class="me-2" style="width: 40px; height: 40px;">
+                <span>{{ match.teamOneName }}</span>
+              </div>
+            </td>
+            <td>
+              <div class="d-flex align-items-center">
+                <img [src]="match.teamTwoIcon" alt="{{ match.teamTwoName }}" class="me-2" style="width: 40px; height: 40px;">
+                <span>{{ match.teamTwoName }}</span>
+              </div>
+            </td>
+            <td>{{ match.teamOnePoints }} : {{ match.teamTwoPoints }}</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
+
+  @if (footballData$ | async; as footballData) {
+    <div class="text-center mt-3">
+      @if (footballData.length === 0) {
+        <p class="text-muted">No matches found.</p>
+      }
+    </div>
+  } @else {
+    <p class="text-muted">{{'Loading...' | translate}}</p>
+  }
+
+</div>

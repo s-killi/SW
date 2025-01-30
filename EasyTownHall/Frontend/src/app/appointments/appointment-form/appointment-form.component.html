@@ -1,0 +1,67 @@
+<div class="container mt-5">
+  <!-- Form für Terminprüfung -->
+  <form [formGroup]="appointmentForm" (ngSubmit)="submitTimeSlotCheck()">
+    <div class="card shadow p-4">
+      <h4 class="card-title mb-4">{{ 'Make appointment' | translate }}</h4>
+
+      <!-- Abteilung Dropdown -->
+      <div class="form-group mb-3">
+        <label for="department" class="form-label">{{ 'Department' | translate }}</label>
+        <select id="department" formControlName="department" class="form-control">
+          @if(departments$ | async; as departments){
+            @for (department of departments; track department.id) {
+              <option [value]="department.id">{{ department.name }}</option>
+            }
+          }
+        </select>
+      </div>
+
+      <!-- Grund Textfeld -->
+      <div class="form-group mb-3">
+        <label for="reason" class="form-label">{{ 'Reason' | translate }}</label>
+        <textarea id="reason" formControlName="reason" class="form-control" rows="3" placeholder="Enter reason"></textarea>
+      </div>
+
+      <!-- Datumsfeld -->
+      <div class="form-group mb-3">
+        <label for="date" class="form-label">{{ 'Date' | translate }}</label>
+        <input id="date" type="date" formControlName="date" class="form-control">
+      </div>
+
+      <!-- Absenden-Button -->
+      <div class="d-flex justify-content-end">
+        <button type="submit" class="btn btn-primary" [disabled]="appointmentForm.invalid">{{ 'Check timeslots' | translate }}</button>
+      </div>
+    </div>
+  </form>
+
+  <!-- Zeitplan-Formular -->
+  @if(workschedule$ | async; as schedule){
+  <div class="container mt-5">
+    <form [formGroup]="timeSlotForm" (ngSubmit)="submitForm()">
+      <div class="card shadow p-4">
+        <h4 class="card-title mb-4">{{ 'Choose an available timeslot' | translate }}</h4>
+
+        <!-- Verfügbare Zeitfenster -->
+        <div class="form-group mb-3">
+          <label for="timeslot" class="form-label">{{ 'Available Timeslots' | translate }}</label>
+          <select id="timeslot" formControlName="timeslot" class="form-control">
+            @for (timeslot of schedule.timeSlots; track timeslot.timeslotId) {
+              @if(timeslot.available){
+                <option [value]="timeslot.timeslotId">
+                  {{ this.appointmentService.formatTime(timeslot.startTime) + " Uhr" }}
+                </option>
+              }
+            }
+          </select>
+        </div>
+
+        <!-- Absenden-Button -->
+        <div class="d-flex justify-content-end">
+          <button type="submit" class="btn btn-primary" [disabled]="timeSlotForm.invalid">{{ 'Make appointment' | translate }}</button>
+        </div>
+      </div>
+    </form>
+  </div>
+  }
+</div>

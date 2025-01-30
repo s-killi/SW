@@ -1,0 +1,32 @@
+.article{
+    margin-top: 40px;
+}
+
+.article-header{
+    margin-bottom: 20px;
+}
+
+.input-group-text {
+    height: 100%; /* Gleiche Höhe wie das Eingabefeld */
+}
+  
+.input-group-text i {
+    font-size: 1rem; /* Falls das Icon zu groß ist, hier anpassen */
+}
+
+button{
+    margin-right: 10px;
+}
+
+select{
+    margin-top: 17px;
+}
+
+.searchbar{
+    max-width: 800px;
+}
+
+.dropdown{
+    width: 200px;
+    margin-right: 10px;
+}

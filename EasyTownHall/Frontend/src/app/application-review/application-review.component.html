@@ -1,0 +1,120 @@
+
+@if(isAdmin ||isServiceworker){
+<div class="row justify-content-center mt-5">
+  <div class="col-8">
+    @if(isLoaded == true) {
+      <div class="card">
+        <div class="card-header bg-primary text-white">
+          <h1 class="h4 mb-0 text-center">{{ applicationForm.applicationFormName }}</h1>
+        </div>
+        <div class="card-body">
+          @for (field of applicationForm.filledFieldDTOS; track $index) {
+            <div class="mb-4">
+              <p class="font-weight-bold text-secondary">{{field.fieldName}}</p>
+              @switch (field.fieldType) {
+                @case ('CHECKBOX') {
+                  <div class="form-check">
+                    @for(item of checkBoxString(field.data); track item) {
+                      <div>
+                        <input
+                          type="checkbox"
+                          id="{{$index}}-{{field.fieldName}}-{{item}}"
+                          name="{{$index}}-{{field.fieldName}}"
+                          class="form-check-input"
+                          checked
+                          disabled
+                        >
+                        <label for="{{$index}}-{{field.fieldName}}-{{item}}" class="form-check-label">
+                          {{item}}
+                        </label>
+                      </div>
+                    }
+                  </div>
+                }
+                @default {
+                  <input
+                    type="text"
+                    class="form-control"
+                    value="{{field.data}}"
+                    readonly
+                  >
+                }
+              }
+            </div>
+          }
+        </div>
+        <div class="card-footer text-center">
+          <button class="btn btn-danger mx-2" type="button" (click)="deny(applicationForm.id)">{{'Deny'|translate}}</button>
+          <button class="btn btn-success mx-2" type="button" (click)="accept(applicationForm.id)">{{'Accept'|translate}}</button>
+        </div>
+      </div>
+      <br>
+      <br>
+    } @else {
+      <div class="alert alert-danger text-center">
+        <h1>{{'Application_Not_Found'|translate}} ...</h1>
+      </div>
+    }
+  </div>
+</div>
+}
+@if(isOwner){
+  <div class="row justify-content-center mt-5">
+    <div class="col-8">
+      @if(isLoaded == true) {
+        <div class="card">
+          <div class="card-header bg-primary text-white">
+            <h1 class="h4 mb-0 text-center">{{ applicationForm.applicationFormName }}</h1>
+          </div>
+          <div class="card-body">
+            @for (field of applicationForm.filledFieldDTOS; track $index) {
+              <div class="mb-4">
+                <p class="font-weight-bold text-secondary">{{field.fieldName}}</p>
+                @switch (field.fieldType) {
+                  @case ('CHECKBOX') {
+                    <div class="form-check">
+                      @for(item of checkBoxString(field.data); track item) {
+                        <div>
+                          <input
+                            type="checkbox"
+                            id="{{$index}}-{{field.fieldName}}-{{item}}"
+                            name="{{$index}}-{{field.fieldName}}"
+                            class="form-check-input"
+                            checked
+                            disabled
+                          >
+                          <label for="{{$index}}-{{field.fieldName}}-{{item}}" class="form-check-label">
+                            {{item}}
+                          </label>
+                        </div>
+                      }
+                    </div>
+                  }
+                  @default {
+                    <input
+                      type="text"
+                      class="form-control"
+                      value="{{field.data}}"
+                      readonly
+                    >
+                  }
+                }
+              </div>
+            }
+          </div>
+          <div class="card-footer text-center">
+            <button class="btn btn-danger mx-2" type="button" (click)="delete(applicationForm.id)">{{'Delete'|translate}}</button>
+          </div>
+        </div>
+        <br>
+        <br>
+      } @else {
+        <div class="alert alert-danger text-center">
+          <h1>{{'Application_Not_Found'|translate}} ...</h1>
+        </div>
+      }
+    </div>
+  </div>
+}@else {
+  <p>{{'Unauthotized'|translate}}</p>
+}

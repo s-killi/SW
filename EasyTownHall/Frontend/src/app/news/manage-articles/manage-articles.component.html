@@ -1,0 +1,83 @@
+<div class="container-md">
+  <h1>{{'Edit_Article' | translate}}</h1>
+
+  <div class="d-flex align-items-center mb-3">
+    <div class="input-group me-3">
+      <span class="input-group-text d-flex">
+        <i class="bi bi-search"></i>
+      </span>
+      <input 
+        type="search" 
+        [formControl]="filterControl" 
+        [(ngModel)]="searchtext" 
+        placeholder="{{'Search...' | translate}}" 
+        class="form-control">
+    </div>
+
+    <form [formGroup]="orderForm" (ngSubmit)="onSubmit()" class="d-flex align-items-center">
+      <select id="dropdown" formControlName="dropdownControl" class="form-select me-2 rm-mrg">
+        <option value="createdAt">{{'Created_At'|translate}}</option>
+        <option value="updatedAt">{{'Updated_At'|translate}}</option>
+        <option value="id">{{'Id'|translate}}</option>
+        <option value="title">{{'Title'|translate}}</option>
+        <option value="author">{{'Author'|translate}}</option>
+      </select>
+      <button (click)="changeOrder()" type="submit" class="btn btn-primary">
+        <i [ngClass]="orderState ? 'bi bi-arrow-down' : 'bi bi-arrow-up'"></i>
+      </button>
+    </form>
+  </div>
+
+  <a href="/newArticle" type="button" class="btn btn-success mb-3">
+    + {{'New_Article'|translate}}
+  </a>
+
+  @if(!orderedArticlesEmpty()){
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>{{'Id'|translate}}</th>
+          <th>{{'Title'|translate}}</th>
+          <th>{{'Category'|translate}}</th>
+          <th>{{'Author'|translate}}</th>
+          <th>{{'Created'|translate}}</th>
+          <th>{{'Last_Update'|translate}}</th>
+          <th>{{'Published'|translate}}</th>
+          <th>{{'Edit'|translate}}</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for(article of allOrderedArticles | articlefilter:searchtext ; track article.id) {
+          <tr>
+            <td>{{ article.id }}</td>
+            <td>{{ article.title }}</td>
+            <td>{{ article.category }}</td>
+            <td>{{ article.author }}</td>
+            <td>{{ article.createdAt | date: 'dd. MMMM yyyy' }}</td>
+            <td>{{ article.updatedAt | date: 'dd. MMMM yyyy' }}</td>
+            <td>
+              @if(article.published){
+                {{'Published'|translate}}
+              }
+              @else {
+                {{'Not_Published'|translate}}
+              }
+            </td>
+            <td>
+              <div class="d-flex flex-row gap-2">
+                <button type="button" class="btn btn-success" (click)="updateArticle(article.id)">
+                  <i class="bi bi-arrow-repeat"></i>
+                  {{'Update_Article'|translate}}
+                </button>
+                <button type="button" class="btn btn-danger" (click)="deleteArticle(article.id)">
+                  <i class="bi bi-trash3"></i>
+                  {{'Delete_Article'|translate}}
+                </button>
+              </div>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
+</div>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        .email-container {
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: #ffffff;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .email-header {
+            background-color: #007BFF;
+            color: #ffffff;
+            text-align: center;
+            padding: 20px;
+            font-size: 1.5em;
+        }
+
+        .email-body {
+            padding: 20px;
+            color: #333333;
+            line-height: 1.6;
+        }
+
+        .email-body p {
+            margin: 10px 0;
+        }
+
+        .email-body a {
+            color: #007BFF;
+            text-decoration: none;
+        }
+
+        .email-footer {
+            background-color: #f4f4f9;
+            text-align: center;
+            padding: 10px;
+            font-size: 0.9em;
+            color: #888888;
+        }
+    </style>
+</head>
+<body>
+<div class="email-container">
+    <div class="email-header">
+        Dein Konto wurde gelöscht
+    </div>
+    <div class="email-body">
+        <p>Hallo, {{NAME}}</p>
+        <p>
+            Wir möchten dich darüber informieren, dass wir dein Konto erfolgreich gelöscht haben.
+        </p>
+        <p>
+            Das Löschdatum war der <strong>{{DELETION_DATE}}</strong>.
+        </p>
+        <p>
+            Falls du Fragen dazu hast oder weitere Unterstützung benötigst,
+            kannst du dich jederzeit an uns wenden.
+        </p>
+        <p>Mit freundlichen Grüßen,<br>Das EasyTownHall-Team</p>
+    </div>
+    <div class="email-footer">
+        © 2025 EasyTownHall Regensburg. Alle Rechte vorbehalten.
+    </div>
+</div>
+</body>
+</html>

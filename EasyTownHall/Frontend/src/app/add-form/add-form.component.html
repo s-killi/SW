@@ -1,0 +1,234 @@
+@if(isAdmin || isServiceworker){
+<div class="container my-5">
+    <h1 class="mb-4">Formular Erstellen</h1>
+  
+    <!-- Titel und Beschreibung des Formulars -->
+    <form [formGroup]="form" class="p-4 border rounded bg-light shadow-sm">
+      <div class="form-group mb-3">
+        <label for="title" class="form-label fw-bold">Titel</label>
+        <input 
+          id="title" 
+          type="text" 
+          class="form-control" 
+          formControlName="title" 
+          placeholder="Titel des Formulars" />
+      </div>
+  
+      <div class="form-group mb-4">
+        <label for="description" class="form-label fw-bold">Beschreibung</label>
+        <textarea
+          id="description"
+          class="form-control"
+          formControlName="description"
+          placeholder="Beschreibung"
+        ></textarea>
+      </div>
+      <hr class="my-4" />
+      
+      <!-- Formfelder hinzufügen -->
+      <h2 class="mb-3">Formfelder</h2>
+      <div formArrayName="formFields">
+        @for(field of formFields.controls; track $index; let outerIndex=$index){
+          <div formGroupName="{{ outerIndex }}" class="form-field mb-4 p-3 border rounded bg-white shadow-sm">
+            <div class="form-field">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h4 class="mb-0">Feld {{ $index + 1}}</h4>
+
+                    <button type="button" class="btn btn-danger btn-sm" (click)="removeField(outerIndex)">
+                      <span aria-hidden="true">&minus;</span>
+                    </button>
+                  </div>
+                  
+              
+              <div class="form-group mb-3">
+                <label for="fieldName-{{ $index }}" class="form-label">Name</label>
+                <input
+                  id="fieldName-{{ $index }}"
+                  type="text"
+                  class="form-control"
+                  placeholder="Name des Feldes"
+                  formControlName="fieldName"
+                />
+                
+              </div>
+              <div class="form-group mb-3">
+                <label for="fieldType-{{ $index }}" class="form-label">Typ</label>
+                <select id="fieldType-{{ $index }}" class="form-control" (change)="onFieldTypeChange($event, $index)">
+                  @for(type of fieldTypes | keyvalue; track type.key){
+                    <option [value]="type.key">{{ type.value }}</option>
+                  }
+                </select>
+              </div>
+              <div class="form-group mb-3">
+                <label for="fieldLabelHelp-{{ $index }}" class="form-label">Hilfslabel</label>
+                <input
+                  id="fieldLabelHelp-{{ $index }}"
+                  type="text"
+                  class="form-control"
+                  placeholder="Hilfstext für das Textfeld"
+                  formControlName="labelHelp"
+                />
+              </div>
+
+              <div class="form-group mb-3">
+                <label for="isRequired" class="form-label fw-bold">Ist das Feld notwendig?</label>
+                <div class="form-check">
+                  <input type="radio" class="form-check-input"
+                    id="fieldisRequired-{{ $index }}-yes" 
+                    value=true formControlName="isRequired">
+                  <label class="form-check-label" for="fieldisRequired-{{ $index }}-yes">Ja</label>
+                </div>
+                <div class="form-check">
+                  <input type="radio" class="form-check-input"
+                    id="fieldisRequired-{{ $index }}-no"
+                    value=false formControlName="isRequired">
+                  <label class="form-check-label" for="fieldisRequired-{{ $index }}-no">Nein</label>
+                </div>
+              </div>
+
+              <div class="form-group mb-3">
+                @switch(field.value.fieldType){
+                  @case('TEXT') {
+                    <div>
+                      <label for="defaultValue-{{ $index }}" class="form-label fw-bold">
+                        Standardwert für dieses Feld
+                      </label>
+                      <input
+                        class="form-control"
+                        type="text"
+                        placeholder="Hier kann ein Standardwert für das Textfeld eingesetzt werden."
+                        id="defaultValue-{{ $index }}"
+                      >
+                    </div>
+                  }
+                  @case('TEXTAREA') {
+                    <div>
+                      <label for="defaultValue-{{ $index }}" class="form-label fw-bold">
+                        Standardwert für dieses Feld
+                      </label>
+                      <input
+                        class="form-control"
+                        type="text"
+                        placeholder="Hier kann ein Standardwert für das Textfeld eingesetzt werden."
+                        id="defaultValue-{{ $index }}"
+                      >
+                    </div>
+                  }
+                  @case('NUMBER') {
+                    <div>
+                      <label for="defaultValue-{{ $index }}" class="form-label fw-bold">
+                        Standardwert für dieses Feld
+                      </label>
+                      <input
+                        class="form-control"
+                        type="number"
+                        placeholder="0"
+                        id="defaultValue-{{ $index }}"
+                      >
+                    </div>
+                  }
+                  @case('DROPDOWN') {
+                    <div formArrayName="data">
+                      @for(number of getArrayFromNumberFieldData(field); track number){
+                        <div class="mb-2">
+                          <label for="data-{{ $index }}-{{ number }}" 
+                            class="form-label">
+                            Wert
+                          </label>
+                          <div class="d-flex align-items-center">
+                            <input
+                              type="text"
+                              id="data-{{ outerIndex }}-{{ number }}"
+                              class="form-control me-2"
+                              placeholder="Option {{ number + 1 }}"
+                              formControlName="{{ $index }}"
+                            >
+                            @if(number > 1){
+                              <button class="btn btn-danger" type="button" (click)="deleteOption(outerIndex, number)">-</button>
+                            }
+                          </div>
+                        </div>
+                      }
+                      <button type="button" class="btn btn-secondary btn-sm" (click)="addDropdownOption($index)">Noch eine Option</button>
+                    </div>
+                  }
+                  @case('CHECKBOX') {
+                    <div formArrayName="data">
+                      @for(number of getArrayFromNumberFieldData(field); track number){
+                        <div class="mb-2">
+                          <label for="data-{{ $index }}-{{ number }}" 
+                            class="form-label">
+                            Wert
+                          </label>
+                          <div class="d-flex align-items-center">
+                            <input
+                              type="text"
+                              id="data-{{ outerIndex }}-{{ number }}"
+                              class="form-control me-2"
+                              placeholder="Option {{ number + 1 }}"
+                              formControlName="{{ $index }}"
+                            >
+                            @if(number > 1){
+                              <button class="btn btn-danger" type="button" (click)="deleteOption(outerIndex, number)">-</button>
+                            }
+                          </div>
+                        </div>
+                      }
+                      <button type="button" class="btn btn-secondary btn-sm" (click)="addDropdownOption($index)">Noch eine Option</button>
+                    </div>
+                  }
+                  @case('RADIO_BUTTON') {
+                    <div formArrayName="data">
+                      @for(number of getArrayFromNumberFieldData(field); track number){
+                        <div class="mb-2">
+                          <label for="data-{{ $index }}-{{ number }}" 
+                            class="form-label">
+                            Wert
+                          </label>
+                          <div class="d-flex align-items-center">
+                            <input
+                              type="text"
+                              id="data-{{ outerIndex }}-{{ number }}"
+                              class="form-control me-2"
+                              placeholder="Option {{ number + 1 }}"
+                              formControlName="{{ $index }}"
+                            >
+                            @if(number > 1){
+                              <button class="btn btn-danger" type="button" (click)="deleteOption(outerIndex, number)">-</button>
+                            }
+                          </div>
+                        </div>
+                      }
+                      <button type="button" class="btn btn-secondary btn-sm" (click)="addDropdownOption($index)">Noch eine Option</button>
+                    </div>
+                  }
+                  @case('DATE') {
+                    <!-- Hier können weitere Klassen für DATE-Felder ergänzt werden -->
+                  }
+                  @case('FILE_UPLOAD') {
+                    <!-- Hier können weitere Klassen für FILE_UPLOAD-Felder ergänzt werden -->
+                  }
+                  @default {
+                    <div class="text-danger fw-bold">
+                      Etwas ist schiefgelaufen. Bitte kontaktiere deinen Admin.
+                    </div>
+                  }
+                }
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+  
+      <button type="button" class="btn btn-primary mt-3" (click)="addField()">Formfeld hinzufügen</button>
+      <hr class="my-4" />
+      
+      @if(isUpdate){
+        <button type="submit" class="btn btn-success" (click)="publishForm()">Antrag updaten</button>
+      }@else {
+        <button type="submit" class="btn btn-success" (click)="publishForm()">Antrag veröffentlichen</button>
+      }
+    </form>
+  </div>}@else {
+    <p>Unauthorizierter Zugriff </p>
+  }
